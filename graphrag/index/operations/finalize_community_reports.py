@@ -16,6 +16,9 @@ def finalize_community_reports(
 ) -> pd.DataFrame:
     """All the steps to transform final community reports."""
     # Merge with communities to add shared fields
+    if "community" not in reports.columns:
+        # This is a fallback - you should fix the root cause
+        reports["community"] = None
     community_reports = reports.merge(
         communities.loc[:, ["community", "parent", "children", "size", "period"]],
         on="community",

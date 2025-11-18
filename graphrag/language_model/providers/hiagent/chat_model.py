@@ -1,14 +1,9 @@
-# Copyright (c) 2025 Microsoft Corporation.
-# Licensed under the MIT License
-"""HiAgent LLM provider adapter for GraphRAG."""
-
 import asyncio
+import os
 from collections.abc import AsyncGenerator, Generator
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-from apikeys import HIAGENT_TEST_API
-from graph_retriever import HiAgentLLMClient
-
+from graphrag.language_model.providers.hiagent.client import HiAgentLLMClient
 from graphrag.language_model.response.base import (BaseModelOutput,
                                                    BaseModelResponse,
                                                    ModelResponse)
@@ -19,10 +14,6 @@ class HiAgentChatLLM:
 
     def __init__(
         self,
-        api_url: str = "https://agent.hust.edu.cn",
-        api_key: str = HIAGENT_TEST_API,
-        user_id: str = "test_user",
-        user_agent: str = "GraphRAG/1.0",
         conversation_inputs: dict[str, Any] | None = None,
         **kwargs: Any,
     ):
@@ -34,11 +25,11 @@ class HiAgentChatLLM:
             api_key: HiAgent
         """
         self.client = HiAgentLLMClient(
-            api_url=api_url,
-            api_key=api_key,
-            user_agent=user_agent,
+            api_url="https://agent.hust.edu.cn",
+            api_key=os.getenv("HIAGENT_APIKEY"),
+            user_agent="GraphRAG/1.0",
         )
-        self.user_id = user_id
+        self.user_id = "graphrag_user"
         self.conversation_inputs = conversation_inputs or {}
         self._conversation_created = False
 
