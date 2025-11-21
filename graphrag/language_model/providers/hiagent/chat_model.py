@@ -15,6 +15,7 @@ class HiAgentChatLLM:
     def __init__(
         self,
         conversation_inputs: dict[str, Any] | None = None,
+        api_key: str | None = None,
         **kwargs: Any,
     ):
         """
@@ -26,7 +27,7 @@ class HiAgentChatLLM:
         """
         self.client = HiAgentLLMClient(
             api_url="https://agent.hust.edu.cn",
-            api_key=os.getenv("HIAGENT_APIKEY"),
+            api_key=os.getenv("HIAGENT_APIKEY") or api_key,
             user_agent="GraphRAG/1.0",
         )
         self.user_id = "graphrag_user"
